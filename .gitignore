@@ -1,9 +1,28 @@
-#  Local .terraform directories
+# Terraform
+.terraform
 **/.terraform/*
-
-# .tfstate files
 *.tfstate
-*.tfstate.*
+*.tfstate.backup
 
-# .tfvars files
-*.tfvars
+# Terragrunt Cache
+.terragrunt-cache/
+
+# Don't commit unencrypted Secrets
+secrets.tfvars
+
+# OS X
+.history
+.DS_Store
+
+# IntelliJ
+.idea_modules
+*.iml
+*.iws
+*.ipr
+.idea/
+build/
+*/build/
+out/
+
+# VScode
+.vscode/
