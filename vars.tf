@@ -1,3 +1,6 @@
+#Modiciation Notice
+#changed file name from variablestf to vars.tf
+
 variable "create_vpc" {
   description = "Controls if VPC should be created (it affects almost all resources)"
   default     = true
@@ -133,10 +136,8 @@ variable "create_database_nat_gateway_route" {
   default     = false
 }
 
-variable "azs" {
-  description = "A list of availability zones in the region"
-  default     = []
-}
+#Modiciation Notice
+#Removed azs variable - replaced with data source
 
 variable "enable_dns_hostnames" {
   description = "Should be true to enable DNS hostnames in the VPC"
