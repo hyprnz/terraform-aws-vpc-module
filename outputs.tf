@@ -615,7 +615,10 @@ output "vpc_endpoint_events_dns_entry" {
 }
 
 # Static values (arguments)
+
+#Modiciation Notice
+#Added renamed vars.azs to data.aws_availability_zones.all.names
 output "azs" {
   description = "A list of availability zones specified as argument to this module"
-  value       = "${var.azs}"
+  value       = "${data.aws_availability_zones.all.names}"
 }
