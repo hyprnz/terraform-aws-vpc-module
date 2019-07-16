@@ -188,7 +188,7 @@ resource "aws_subnet" "public" {
   availability_zone       = "${element(data.aws_availability_zones.all.names, count.index)}"
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 
-  tags = "${merge(map("Tier", "Public"), map("Name", format("%s-${var.public_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.public_subnet_tags, var.eks_binds_public_subnet ? var.public_subnet_kubernetes_lb_tag : 0 )}"
+  tags = "${merge(map("Tier", "Public"), map("Name", format("%s-${var.public_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.public_subnet_tags)}"
 }
 
 #################
@@ -201,7 +201,7 @@ resource "aws_subnet" "private" {
   cidr_block        = "${var.private_subnets[count.index]}"
   availability_zone = "${element(data.aws_availability_zones.all.names, count.index)}"
 
-  tags = "${merge(map("Tier", "Private"), map("Name", format("%s-${var.private_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.private_subnet_tags, var.eks_binds_private_subnet ? var.private_subnet_kubernetes_lb_tag : 0)}"
+  tags = "${merge(map("Tier", "Private"), map("Name", format("%s-${var.private_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.private_subnet_tags)}"
 }
 
 ##################
