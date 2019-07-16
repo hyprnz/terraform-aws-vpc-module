@@ -1041,3 +1041,31 @@ variable "elasticache_outbound_acl_rules" {
     },
   ]
 }
+
+#added eks subnet variables
+variable "eks_binds_private_subnet" {
+  description = "If the private subnets are used by EKS"
+  default = false
+}
+
+variable "eks_binds_public_subnet" {
+  description = "If the public subnets are used by EKS"
+  default = false
+}
+
+variable "private_subnet_kubernetes_lb_tag" {
+  description = "Kubernetes lb tag for private subnet"
+  default = {
+    name = "kubernetes.io/role/internal-elb"
+    value = 1
+  }
+}
+
+variable "public_subnet_kubernetes_lb_tag" {
+  description = "Kubernetes lb tag for public subnet"
+  default = {
+    name = "kubernetes.io/role/elb"
+    value = 1
+  }
+}
+
