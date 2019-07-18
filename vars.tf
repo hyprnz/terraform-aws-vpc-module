@@ -1049,7 +1049,3 @@ variable "supports_eks_cluster" {
 variable "eks_cluster_name" {
   default = ""
 }
-
-
-
-
