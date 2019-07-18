@@ -1042,10 +1042,13 @@ variable "elasticache_outbound_acl_rules" {
   ]
 }
 
+#Modiciation Notice
+#added EKS support
 variable "supports_eks_cluster" {
+  description = "If VPC is used for EKS cluster.Sets Keubernetes tags on VPC resources. Requires eks_cluster_name "
   default = false
 }
 
 variable "eks_cluster_name" {
-  default = ""
+  default = "Name of EKS Cluster. supports_eks_cluster must also be set to true"
 }
