@@ -10,20 +10,20 @@ locals {
   vpc_id = "${element(concat(aws_vpc_ipv4_cidr_block_association.this.*.vpc_id, aws_vpc.this.*.id, list("")), 0)}"
 
   eks_cluster_shared_tag = "${zipmap(
-    list(var.supports_eks_cluster ? "kubernetes.io/cluster/${var.eks_cluster_name}" : ""),
-    list(var.supports_eks_cluster ? "shared" : ""))}"
+    list(var.supports_eks_cluster && length(var.eks_cluster_name) > 0 ? "kubernetes.io/cluster/${var.eks_cluster_name}" : ""),
+    list(var.supports_eks_cluster && length(var.eks_cluster_name) > 0 ? "shared" : ""))}"
 
   eks_private_subnet_tag = "${merge(local.eks_cluster_shared_tag,
     zipmap(
-      list(var.supports_eks_cluster ? "kubernetes.io/role/internal-elb" : ""),
-      list(var.supports_eks_cluster ? "1" : "")
+      list(var.supports_eks_cluster && length(var.eks_cluster_name) > 0 ? "kubernetes.io/role/internal-elb" : ""),
+      list(var.supports_eks_cluster && length(var.eks_cluster_name) > 0 ? "1" : "")
     )
   )}"
 
   eks_public_subnet_tag = "${merge(local.eks_cluster_shared_tag,
     zipmap(
-      list(var.supports_eks_cluster ? "kubernetes.io/role/elb" : ""),
-      list(var.supports_eks_cluster ? "1" : "")
+      list(var.supports_eks_cluster && length(var.eks_cluster_name) > 0 ? "kubernetes.io/role/elb" : ""),
+      list(var.supports_eks_cluster && length(var.eks_cluster_name) > 0 ? "1" : "")
     )
   )}"
 }
