@@ -1042,4 +1042,13 @@ variable "elasticache_outbound_acl_rules" {
   ]
 }
 
+variable "supports_eks_cluster" {
+  default = false
+}
+
+variable "eks_cluster_name" {
+}
+
+
+
 

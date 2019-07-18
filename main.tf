@@ -8,6 +8,24 @@ locals {
 
   # Use `local.vpc_id` to give a hint to Terraform that subnets should be deleted before secondary CIDR blocks can be free!
   vpc_id = "${element(concat(aws_vpc_ipv4_cidr_block_association.this.*.vpc_id, aws_vpc.this.*.id, list("")), 0)}"
+
+  eks_cluster_shared_tag = "${zipmap(
+    list(var.supports_eks_cluster ? "kubernetes.io/cluster/${var.eks_cluster_name}" : ""),
+    list(var.supports_eks_cluster ? "shared" : ""))}"
+
+  eks_private_subnet_tag = "${merge(local.eks_cluster_shared_tag,
+    zipmap(
+      list(var.supports_eks_cluster ? "kubernetes.io/role/internal-elb" : ""),
+      list(var.supports_eks_cluster ? "1" : "")
+    )
+  )}"
+
+  eks_public_subnet_tag = "${merge(local.eks_cluster_shared_tag,
+    zipmap(
+      list(var.supports_eks_cluster ? "kubernetes.io/role/elb" : ""),
+      list(var.supports_eks_cluster ? "1" : "")
+    )
+  )}"
 }
 
 ######
@@ -22,7 +40,7 @@ resource "aws_vpc" "this" {
   enable_dns_support               = "${var.enable_dns_support}"
   assign_generated_ipv6_cidr_block = "${var.assign_generated_ipv6_cidr_block}"
 
-  tags = "${merge(map("Name", format("%s", var.name)), var.tags, var.vpc_tags)}"
+  tags = "${merge(map("Name", format("%s", var.name)), var.tags, var.vpc_tags, local.eks_cluster_shared_tag)}"
 }
 
 resource "aws_vpc_ipv4_cidr_block_association" "this" {
@@ -188,7 +206,7 @@ resource "aws_subnet" "public" {
   availability_zone       = "${element(data.aws_availability_zones.all.names, count.index)}"
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 
-  tags = "${merge(map("Tier", "Public"), map("Name", format("%s-${var.public_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.public_subnet_tags)}"
+  tags = "${merge(map("Tier", "Public"), map("Name", format("%s-${var.public_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.public_subnet_tags, local.eks_public_subnet_tag)}"
 }
 
 #################
@@ -201,7 +219,7 @@ resource "aws_subnet" "private" {
   cidr_block        = "${var.private_subnets[count.index]}"
   availability_zone = "${element(data.aws_availability_zones.all.names, count.index)}"
 
-  tags = "${merge(map("Tier", "Private"), map("Name", format("%s-${var.private_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.private_subnet_tags)}"
+  tags = "${merge(map("Tier", "Private"), map("Name", format("%s-${var.private_subnet_suffix}-%s", var.name, element(data.aws_availability_zones.all.names, count.index))), var.tags, var.private_subnet_tags, local.eks_private_subnet_tag)}"
 }
 
 ##################
