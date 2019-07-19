@@ -1,4 +1,4 @@
-module "example_eks" {
+module "example_vpc_eks" {
   source = "../../"
 
   name            = "example-env"
@@ -9,7 +9,8 @@ module "example_eks" {
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true
-  supports_eks_cluster = true
-  eks_cluster_name     = "eks-env-example"
+
   tags                 = "${map("Environment", "env")}"
+
+  eks_cluster_name     = "eks-env-example"
 }
