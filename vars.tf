@@ -1046,5 +1046,5 @@ variable "elasticache_outbound_acl_rules" {
 #added EKS support
 variable "eks_cluster_name" {
   description = "Name of EKS Cluster. If set adds tags to VPC and Subnet resources"
-  default = ""
+  default     = ""
 }

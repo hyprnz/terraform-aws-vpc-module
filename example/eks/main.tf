@@ -10,9 +10,9 @@ module "example_vpc_eks" {
   single_nat_gateway   = true
   enable_dns_hostnames = true
 
-  tags                 = "${map("Environment", "env")}"
+  tags = "${map("Environment", "env")}"
 
-  eks_cluster_name     = "eks-example"
+  eks_cluster_name = "eks-example"
 }
 
 output "vpc_id" {

@@ -9,13 +9,14 @@ locals {
   # Use `local.vpc_id` to give a hint to Terraform that subnets should be deleted before secondary CIDR blocks can be free!
   vpc_id = "${element(concat(aws_vpc_ipv4_cidr_block_association.this.*.vpc_id, aws_vpc.this.*.id, list("")), 0)}"
 
-eks_tag_options = {
-  shared_tag = "${map("kubernetes.io/cluster/${var.eks_cluster_name}", "shared")}"
-  int_elb_tag = "${map("kubernetes.io/role/internal-elb", "1")}"
-  elb_tag = "${map("kubernetes.io/role/elb", "1")}"
-  no_eks  = {}
-}
-  supports_eks = "${length(var.eks_cluster_name) > 0}"
+  eks_tag_options = {
+    shared_tag  = "${map("kubernetes.io/cluster/${var.eks_cluster_name}", "shared")}"
+    int_elb_tag = "${map("kubernetes.io/role/internal-elb", "1")}"
+    elb_tag     = "${map("kubernetes.io/role/elb", "1")}"
+    no_eks      = {}
+  }
+
+  supports_eks    = "${length(var.eks_cluster_name) > 0}"
   eks_cluster_tag = "${local.eks_tag_options[local.supports_eks ? "shared_tag" : "no_eks" ]}"
 
   eks_private_subnet_tag = "${local.eks_tag_options[local.supports_eks ? "int_elb_tag" : "no_eks"]}"
