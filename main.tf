@@ -15,11 +15,12 @@ eks_tag_options = {
   elb_tag = "${map("kubernetes.io/role/elb", "1")}"
   no_eks  = {}
 }
-  eks_cluster_tag = "${local.eks_tag_options[length(var.eks_cluster_name) > 0 ? "shared_tag" : "no_eks" ]}"
+  supports_eks = "${length(var.eks_cluster_name) > 0}"
+  eks_cluster_tag = "${local.eks_tag_options[local.supports_eks ? "shared_tag" : "no_eks" ]}"
 
-  eks_private_subnet_tag = "${local.eks_tag_options[length(var.eks_cluster_name) > 0 ? "int_elb_tag" : "no_eks"]}"
+  eks_private_subnet_tag = "${local.eks_tag_options[local.supports_eks ? "int_elb_tag" : "no_eks"]}"
 
-  eks_public_subnet_tag = "${local.eks_tag_options[length(var.eks_cluster_name) > 0 ? "elb_tag" : "no_eks"]}"
+  eks_public_subnet_tag = "${local.eks_tag_options[local.supports_eks ? "elb_tag" : "no_eks"]}"
 }
 
 ######
