@@ -12,5 +12,9 @@ module "example_vpc_eks" {
 
   tags                 = "${map("Environment", "env")}"
 
-  eks_cluster_name     = "eks-env-example"
+  eks_cluster_name     = "eks-example"
+}
+
+output "vpc_id" {
+  value = "${module.example_vpc_eks.vpc_id}"
 }
