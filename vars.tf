@@ -1048,3 +1048,18 @@ variable "eks_cluster_name" {
   description = "Name of EKS Cluster. If set adds tags to VPC and Subnet resources"
   default     = ""
 }
+
+#Modiciation Notice
+#Added variables to support tranist gateway routes
+
+variable "transit_gateway_destination_cidrs" {
+  description = "List of cidr blocks to associate with the `transit_gateway_id` variable. Routes are added to public and private route tables"
+  type        = "list"
+  default     =  []
+}
+
+variable "transit_gateway_id" {
+  description = "The tranist gateway id to associate routes for `tranist_gateway_destination_cidrs` list. Routes are added to public and private route tables"
+  default     = ""
+}
+

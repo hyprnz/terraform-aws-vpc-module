@@ -6,6 +6,10 @@ locals {
   max_subnet_length = "${max(length(var.private_subnets), length(var.elasticache_subnets), length(var.database_subnets), length(var.redshift_subnets))}"
   nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(data.aws_availability_zones.all.names) : local.max_subnet_length)}"
 
+#Modiciation Notice
+#Added route entires for transit gateway
+  transit_gateway_route_count = "${var.create_vpc && length(var.public_subnets) > 0 && length(var.transit_gateway_destination_cidrs) > 0 ? length(var.transit_gateway_destination_cidrs) : 0}"
+
   # Use `local.vpc_id` to give a hint to Terraform that subnets should be deleted before secondary CIDR blocks can be free!
   vpc_id = "${element(concat(aws_vpc_ipv4_cidr_block_association.this.*.vpc_id, aws_vpc.this.*.id, list("")), 0)}"
 
@@ -106,6 +110,22 @@ resource "aws_route" "public_internet_gateway" {
   }
 }
 
+#Modiciation Notice
+#Added route entires for transit gateway
+
+resource "aws_route" "public_transit_gateway" {
+  count = "${local.transit_gateway_route_count}"
+
+  route_table_id         = "${aws_route_table.public.id}"
+  destination_cidr_block = "${element(var.transit_gateway_destination_cidrs, count.index)}"
+  transit_gateway_id     = "${var.transit_gateway_id}"
+
+  timeouts {
+    create = "5m"
+  }
+}
+
+
 #################
 # Private routes
 # There are as many routing tables as the number of NAT gateways
@@ -121,6 +141,22 @@ resource "aws_route_table" "private" {
     # When attaching VPN gateways it is common to define aws_vpn_gateway_route_propagation
     # resources that manipulate the attributes of the routing table (typically for the private subnets)
     ignore_changes = ["propagating_vgws"]
+  }
+}
+
+
+#Modiciation Notice
+#Added route entires for transit gateway
+resource "aws_route" "private_transit_gateway" {
+  #The count is a product of the number of private route tables and the number of routes for the transit gateway
+  count = "${local.nat_gateway_count * local.transit_gateway_route_count}"
+
+  route_table_id         = "${element(aws_route_table.private.*.id, floor(count.index/length(aws_route_table.private.*.id)))}"
+  destination_cidr_block = "${element(var.transit_gateway_destination_cidrs, count.index % length(var.transit_gateway_destination_cidrs))}"
+  transit_gateway_id     = "${var.transit_gateway_id}"
+
+  timeouts {
+    create = "5m"
   }
 }
 
