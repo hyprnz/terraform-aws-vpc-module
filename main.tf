@@ -6,8 +6,8 @@ locals {
   max_subnet_length = "${max(length(var.private_subnets), length(var.elasticache_subnets), length(var.database_subnets), length(var.redshift_subnets))}"
   nat_gateway_count = "${var.single_nat_gateway ? 1 : (var.one_nat_gateway_per_az ? length(data.aws_availability_zones.all.names) : local.max_subnet_length)}"
 
-#Modiciation Notice
-#Added route entires for transit gateway
+  #Modiciation Notice
+  #Added route entires for transit gateway
   transit_gateway_route_count = "${var.create_vpc && length(var.public_subnets) > 0 && length(var.transit_gateway_destination_cidrs) > 0 ? length(var.transit_gateway_destination_cidrs) : 0}"
 
   # Use `local.vpc_id` to give a hint to Terraform that subnets should be deleted before secondary CIDR blocks can be free!
@@ -125,7 +125,6 @@ resource "aws_route" "public_transit_gateway" {
   }
 }
 
-
 #################
 # Private routes
 # There are as many routing tables as the number of NAT gateways
@@ -143,7 +142,6 @@ resource "aws_route_table" "private" {
     ignore_changes = ["propagating_vgws"]
   }
 }
-
 
 #Modiciation Notice
 #Added route entires for transit gateway
