@@ -4,6 +4,7 @@
 variable "create_vpc" {
   description = "Controls if VPC should be created (it affects almost all resources)"
   default     = true
+  type = bool
 }
 
 variable "name" {
@@ -94,46 +95,55 @@ variable "intra_subnets" {
 variable "create_database_subnet_route_table" {
   description = "Controls if separate route table for database should be created"
   default     = false
+  type = bool
 }
 
 variable "create_redshift_subnet_route_table" {
   description = "Controls if separate route table for redshift should be created"
   default     = false
+  type = bool
 }
 
 variable "enable_public_redshift" {
   description = "Controls if redshift should have public routing table"
   default     = false
+  type = bool
 }
 
 variable "create_elasticache_subnet_route_table" {
   description = "Controls if separate route table for elasticache should be created"
   default     = false
+  type = bool
 }
 
 variable "create_database_subnet_group" {
   description = "Controls if database subnet group should be created"
   default     = true
+  type = bool
 }
 
 variable "create_elasticache_subnet_group" {
   description = "Controls if elasticache subnet group should be created"
   default     = true
+  type = bool
 }
 
 variable "create_redshift_subnet_group" {
   description = "Controls if redshift subnet group should be created"
   default     = true
+  type = bool
 }
 
 variable "create_database_internet_gateway_route" {
   description = "Controls if an internet gateway route for public database access should be created"
   default     = false
+  type = bool
 }
 
 variable "create_database_nat_gateway_route" {
   description = "Controls if a nat gateway route should be created to give internet access to the database subnets"
   default     = false
+  type = bool
 }
 
 #Modiciation Notice
@@ -142,152 +152,181 @@ variable "create_database_nat_gateway_route" {
 variable "enable_dns_hostnames" {
   description = "Should be true to enable DNS hostnames in the VPC"
   default     = false
+  type = bool
 }
 
 variable "enable_dns_support" {
   description = "Should be true to enable DNS support in the VPC"
   default     = true
+  type = bool
 }
 
 variable "enable_nat_gateway" {
   description = "Should be true if you want to provision NAT Gateways for each of your private networks"
   default     = false
+  type = bool
 }
 
 variable "single_nat_gateway" {
   description = "Should be true if you want to provision a single shared NAT Gateway across all of your private networks"
   default     = false
+  type = bool
 }
 
 variable "one_nat_gateway_per_az" {
   description = "Should be true if you want only one NAT Gateway per availability zone. Requires `var.azs` to be set, and the number of `public_subnets` created to be greater than or equal to the number of availability zones specified in `var.azs`."
   default     = false
+  type = bool
 }
 
 variable "reuse_nat_ips" {
   description = "Should be true if you don't want EIPs to be created for your NAT Gateways and will instead pass them in via the 'external_nat_ip_ids' variable"
   default     = false
+  type = bool
 }
 
 variable "external_nat_ip_ids" {
   description = "List of EIP IDs to be assigned to the NAT Gateways (used in combination with reuse_nat_ips)"
-
+  type = list(string)
   default = []
 }
 
 variable "enable_dynamodb_endpoint" {
   description = "Should be true if you want to provision a DynamoDB endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "enable_s3_endpoint" {
   description = "Should be true if you want to provision an S3 endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "enable_sqs_endpoint" {
   description = "Should be true if you want to provision an SQS endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "sqs_endpoint_security_group_ids" {
   description = "The ID of one or more security groups to associate with the network interface for SQS endpoint"
   default     = []
+  type = list(string)
 }
 
 variable "sqs_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for SQS endpoint. Only a single subnet within an AZ is supported. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "sqs_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for SQS endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_ssm_endpoint" {
   description = "Should be true if you want to provision an SSM endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ssm_endpoint_security_group_ids" {
   description = "The ID of one or more security groups to associate with the network interface for SSM endpoint"
   default     = []
+  type = list(string)
 }
 
 variable "ssm_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for SSM endpoint. Only a single subnet within an AZ is supported. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "ssm_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for SSM endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_ssmmessages_endpoint" {
   description = "Should be true if you want to provision a SSMMESSAGES endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "enable_apigw_endpoint" {
   description = "Should be true if you want to provision an api gateway endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "apigw_endpoint_security_group_ids" {
   description = "The ID of one or more security groups to associate with the network interface for API GW  endpoint"
   default     = []
+  type = list(string)
 }
 
 variable "apigw_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for API GW endpoint"
   default     = false
+  type = bool
 }
 
 variable "apigw_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for API GW endpoint. Only a single subnet within an AZ is supported. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "ssmmessages_endpoint_security_group_ids" {
   description = "The ID of one or more security groups to associate with the network interface for SSMMESSAGES endpoint"
   default     = []
+  type = list(string)
 }
 
 variable "ssmmessages_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for SSMMESSAGES endpoint. Only a single subnet within an AZ is supported. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "ssmmessages_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for SSMMESSAGES endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_ec2_endpoint" {
   description = "Should be true if you want to provision an EC2 endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ec2_endpoint_security_group_ids" {
   description = "The ID of one or more security groups to associate with the network interface for EC2 endpoint"
   default     = []
+  type = list(string)
 }
 
 variable "ec2_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for EC2 endpoint"
   default     = false
+  type = bool
 }
 
 variable "ec2_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for EC2 endpoint. Only a single subnet within an AZ is supported. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "enable_ec2messages_endpoint" {
   description = "Should be true if you want to provision an EC2MESSAGES endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ec2messages_endpoint_security_group_ids" {
@@ -298,46 +337,55 @@ variable "ec2messages_endpoint_security_group_ids" {
 variable "ec2messages_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for EC2MESSAGES endpoint"
   default     = false
+  type = bool
 }
 
 variable "ec2messages_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for EC2MESSAGES endpoint. Only a single subnet within an AZ is supported. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "enable_ecr_api_endpoint" {
   description = "Should be true if you want to provision an ecr api endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ecr_api_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for ECR api endpoint. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "ecr_api_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for ECR API endpoint"
   default     = false
+  type = bool
 }
 
 variable "ecr_api_endpoint_security_group_ids" {
   description = "The ID of one or more security groups to associate with the network interface for ECR API endpoint"
   default     = []
+  type = list(string)
 }
 
 variable "enable_ecr_dkr_endpoint" {
   description = "Should be true if you want to provision an ecr dkr endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ecr_dkr_endpoint_subnet_ids" {
   description = "The ID of one or more subnets in which to create a network interface for ECR dkr endpoint. If omitted, private subnets will be used."
   default     = []
+  type = list(string)
 }
 
 variable "ecr_dkr_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for ECR DKR endpoint"
   default     = false
+  type = bool
 }
 
 variable "ecr_dkr_endpoint_security_group_ids" {
@@ -348,6 +396,7 @@ variable "ecr_dkr_endpoint_security_group_ids" {
 variable "enable_kms_endpoint" {
   description = "Should be true if you want to provision a KMS endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "kms_endpoint_security_group_ids" {
@@ -363,11 +412,13 @@ variable "kms_endpoint_subnet_ids" {
 variable "kms_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for KMS endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_ecs_endpoint" {
   description = "Should be true if you want to provision a ECS endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ecs_endpoint_security_group_ids" {
@@ -383,11 +434,13 @@ variable "ecs_endpoint_subnet_ids" {
 variable "ecs_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for ECS endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_ecs_agent_endpoint" {
   description = "Should be true if you want to provision a ECS Agent endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ecs_agent_endpoint_security_group_ids" {
@@ -403,11 +456,13 @@ variable "ecs_agent_endpoint_subnet_ids" {
 variable "ecs_agent_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for ECS Agent endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_ecs_telemetry_endpoint" {
   description = "Should be true if you want to provision a ECS Telemetry endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "ecs_telemetry_endpoint_security_group_ids" {
@@ -423,11 +478,13 @@ variable "ecs_telemetry_endpoint_subnet_ids" {
 variable "ecs_telemetry_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for ECS Telemetry endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_logs_endpoint" {
   description = "Should be true if you want to provision a CloudWatch Logs endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "logs_endpoint_security_group_ids" {
@@ -443,11 +500,13 @@ variable "logs_endpoint_subnet_ids" {
 variable "logs_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for CloudWatch Logs endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_cloudtrail_endpoint" {
   description = "Should be true if you want to provision a CloudTrail endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "cloudtrail_endpoint_security_group_ids" {
@@ -463,11 +522,13 @@ variable "cloudtrail_endpoint_subnet_ids" {
 variable "cloudtrail_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for CloudTrail endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_elasticloadbalancing_endpoint" {
   description = "Should be true if you want to provision a Elastic Load Balancing endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "elasticloadbalancing_endpoint_security_group_ids" {
@@ -483,11 +544,13 @@ variable "elasticloadbalancing_endpoint_subnet_ids" {
 variable "elasticloadbalancing_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for Elastic Load Balancing endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_sns_endpoint" {
   description = "Should be true if you want to provision a SNS endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "sns_endpoint_security_group_ids" {
@@ -503,11 +566,13 @@ variable "sns_endpoint_subnet_ids" {
 variable "sns_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for SNS endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_events_endpoint" {
   description = "Should be true if you want to provision a CloudWatch Events endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "events_endpoint_security_group_ids" {
@@ -523,11 +588,13 @@ variable "events_endpoint_subnet_ids" {
 variable "events_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for CloudWatch Events endpoint"
   default     = false
+  type = bool
 }
 
 variable "enable_monitoring_endpoint" {
   description = "Should be true if you want to provision a CloudWatch Monitoring endpoint to the VPC"
   default     = false
+  type = bool
 }
 
 variable "monitoring_endpoint_security_group_ids" {
@@ -543,41 +610,49 @@ variable "monitoring_endpoint_subnet_ids" {
 variable "monitoring_endpoint_private_dns_enabled" {
   description = "Whether or not to associate a private hosted zone with the specified VPC for CloudWatch Monitoring endpoint"
   default     = false
+  type = bool
 }
 
 variable "map_public_ip_on_launch" {
   description = "Should be false if you do not want to auto-assign public IP on launch"
   default     = true
+  type = bool
 }
 
 variable "enable_vpn_gateway" {
   description = "Should be true if you want to create a new VPN Gateway resource and attach it to the VPC"
   default     = false
+  type = bool
 }
 
 variable "vpn_gateway_id" {
   description = "ID of VPN Gateway to attach to the VPC"
   default     = ""
+  type = string
 }
 
 variable "amazon_side_asn" {
   description = "The Autonomous System Number (ASN) for the Amazon side of the gateway. By default the virtual private gateway is created with the current default Amazon ASN."
   default     = "64512"
+  type = string
 }
 
 variable "propagate_private_route_tables_vgw" {
   description = "Should be true if you want route table propagation"
   default     = false
+  type = bool
 }
 
 variable "propagate_public_route_tables_vgw" {
   description = "Should be true if you want route table propagation"
   default     = false
+  type = bool
 }
 
 variable "tags" {
   description = "A map of tags to add to all resources"
   default     = {}
+
 }
 
 variable "vpc_tags" {
@@ -713,6 +788,7 @@ variable "vpn_gateway_tags" {
 variable "enable_dhcp_options" {
   description = "Should be true if you want to specify a DHCP options set with a custom domain name, DNS servers, NTP servers, netbios servers, and/or netbios server type"
   default     = false
+  type = bool
 }
 
 variable "dhcp_options_domain_name" {
@@ -746,6 +822,7 @@ variable "dhcp_options_netbios_node_type" {
 variable "manage_default_vpc" {
   description = "Should be true to adopt and manage Default VPC"
   default     = false
+  type = bool
 }
 
 variable "default_vpc_name" {
@@ -756,16 +833,19 @@ variable "default_vpc_name" {
 variable "default_vpc_enable_dns_support" {
   description = "Should be true to enable DNS support in the Default VPC"
   default     = true
+  type = bool
 }
 
 variable "default_vpc_enable_dns_hostnames" {
   description = "Should be true to enable DNS hostnames in the Default VPC"
   default     = false
+  type = bool
 }
 
 variable "default_vpc_enable_classiclink" {
   description = "Should be true to enable ClassicLink in the Default VPC"
   default     = false
+  type = bool
 }
 
 variable "default_vpc_tags" {
@@ -821,14 +901,15 @@ variable "elasticache_dedicated_network_acl" {
 variable "default_network_acl_ingress" {
   description = "List of maps of ingress rules to set on the Default Network ACL"
 
-  default = [{
-    rule_no    = 100
-    action     = "allow"
-    from_port  = 0
-    to_port    = 0
-    protocol   = "-1"
-    cidr_block = "0.0.0.0/0"
-  },
+  default = [
+    {
+      rule_no    = 100
+      action     = "allow"
+      from_port  = 0
+      to_port    = 0
+      protocol   = "-1"
+      cidr_block = "0.0.0.0/0"
+    },
     {
       rule_no         = 101
       action          = "allow"
@@ -843,14 +924,15 @@ variable "default_network_acl_ingress" {
 variable "default_network_acl_egress" {
   description = "List of maps of egress rules to set on the Default Network ACL"
 
-  default = [{
-    rule_no    = 100
-    action     = "allow"
-    from_port  = 0
-    to_port    = 0
-    protocol   = "-1"
-    cidr_block = "0.0.0.0/0"
-  },
+  default = [
+    {
+      rule_no    = 100
+      action     = "allow"
+      from_port  = 0
+      to_port    = 0
+      protocol   = "-1"
+      cidr_block = "0.0.0.0/0"
+    },
     {
       rule_no         = 101
       action          = "allow"
@@ -1054,7 +1136,7 @@ variable "eks_cluster_name" {
 
 variable "transit_gateway_destination_cidrs" {
   description = "List of cidr blocks to associate with the `transit_gateway_id` variable. Routes are added to public and private route tables"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -1062,3 +1144,4 @@ variable "transit_gateway_id" {
   description = "The tranist gateway id to associate routes for `tranist_gateway_destination_cidrs` list. Routes are added to public and private route tables"
   default     = ""
 }
+
