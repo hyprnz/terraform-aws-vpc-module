@@ -150,7 +150,7 @@ resource "aws_route" "private_transit_gateway" {
   count = "${local.nat_gateway_count * local.transit_gateway_route_count}"
 
   route_table_id         = "${element(aws_route_table.private.*.id, floor(count.index/length(aws_route_table.private.*.id)))}"
-  destination_cidr_block = "${element(var.transit_gateway_destination_cidrs, count.index % length(var.transit_gateway_destination_cidrs))}"
+  destination_cidr_block = "${element(concat(var.transit_gateway_destination_cidrs, list("default")), count.index % length(concat(var.transit_gateway_destination_cidrs, list(""))))}"
   transit_gateway_id     = "${var.transit_gateway_id}"
 
   timeouts {
