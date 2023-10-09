@@ -1,4 +1,7 @@
 # AWS VPC Module
+
+**This module is no longer being maintained** <br/>
+
 Terraform module that implements a VPC and associated resources. Based off the [AWS VPC Module](https://github.com/terraform-aws-modules/terraform-aws-vpc)
 
 As there is a version constraint set for the AWS provider, when calling this module, it is recommended to pass a reference of the current AWS provider in the module as per the [documentation](https://www.terraform.io/docs/configuration/modules.html#passing-providers-explicitly)
